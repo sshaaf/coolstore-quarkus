@@ -15,7 +15,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { NavComponent } from './components/nav/nav.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
-import { HomeComponent } from './components/home/home.component';
+import { AllProductsComponent } from './components/all-products/allProducts.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     DashComponent,
     NavComponent,
-    HomeComponent,
+    AllProductsComponent,
   ],
   imports: [
     BrowserModule,
