@@ -1,4 +1,5 @@
 // Add Inventory data
+CREATE SEQUENCE todo_seq START 1;
 INSERT INTO INVENTORY (id, itemId, link, location, quantity) values (1, '329299', 'http://maps.google.com/?q=Raleigh', 'Raleigh', 736);
 INSERT INTO INVENTORY (id, itemId, link, location, quantity) values (2, '329199', 'http://maps.google.com/?q=Boston', 'Boston', 512);
 INSERT INTO INVENTORY (id, itemId, link, location, quantity) values (3, '165613', 'http://maps.google.com/?q=Seoul', 'Seoul', 256);
