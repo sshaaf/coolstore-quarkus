@@ -1,11 +1,11 @@
-insert into catalog (itemId, title, category, description, price, image) values ('329299', 'Quarkus T-shirt', 'Mens Clothing','Mens Clothing', 10.00, '329299.png');
-insert into catalog (itemId, title, category, description, price, image) values ('329199', 'Pronounced Kubernetes', 'Book','Book', 9.00, '329199.png');
-insert into catalog (itemId, title, category, description, price, image) values ('165613', 'Knit socks', 'Accessories','Accessories',4.15, '165613.png');
-insert into catalog (itemId, title, category, description, price, image) values ('165614', 'Quarkus H2Go water bottle', 'Accessories','Accessories', 14.45, '165614.png');
-insert into catalog (itemId, title, category, description, price, image) values ('165954', 'Patagonia Refugio pack 28L', 'Accessories','Accessories', 6.00, '165954.png');
-insert into catalog (itemId, title, category, description, price, image) values ('444434', 'Red Hat Impact T-shirt', 'Womens Clothing','Womens Clothing', 9.00, '444434.png');
-insert into catalog (itemId, title, category, description, price, image) values ('444435', 'Quarkus twill cap', 'Accessories','Accessories',13.00 , '444435.png');
-insert into catalog (itemId, title, category, description, price, image) values ('444437', 'Nanobloc Universal Webcam Cover', 'Accessories','Accessories', 2.75, '444437.png');
+insert into catalog (itemId, title, category, description, price, image) values ('329299', 'Quarkus T-shirt', 'Mens Clothing','Mens Clothing', 10.00, '329299.jpg');
+insert into catalog (itemId, title, category, description, price, image) values ('329199', 'Pronounced Kubernetes', 'Mens Clothing','Mens Clothing', 9.00, '329199.jpg');
+insert into catalog (itemId, title, category, description, price, image) values ('165613', 'Knit socks', 'Accessories','Accessories',4.15, '165613.jpg');
+insert into catalog (itemId, title, category, description, price, image) values ('165614', 'Quarkus H2Go water bottle', 'Accessories','Accessories', 14.45, '165614.jpg');
+insert into catalog (itemId, title, category, description, price, image) values ('165954', 'Patagonia Refugio pack 28L', 'Accessories','Accessories', 6.00, '165954.jpg');
+insert into catalog (itemId, title, category, description, price, image) values ('444434', 'Red Hat Impact T-shirt', 'Womens Clothing','Womens Clothing', 9.00, '444434.jpg');
+insert into catalog (itemId, title, category, description, price, image) values ('444435', 'Quarkus twill cap', 'Accessories','Accessories',13.00 , '444435.jpg');
+insert into catalog (itemId, title, category, description, price, image) values ('444437', 'Nanobloc Universal Webcam Cover', 'Accessories','Accessories', 2.75, '444437.jpg');
 
 -- following via https://fakestoreapi.com/products/
 
