@@ -5,21 +5,27 @@ import java.math.BigDecimal;
 public class Product{
 
     private String itemId;
-    private String name;
+    private String title;
     private String desc;
     private BigDecimal price;
     private int quantity;
+
+    private String image;
+    private String category;
+
 
     public Product() {
 
     }
 
-    public Product(String itemId, String name, String desc, BigDecimal price) {
+    public Product(String itemId, String title, String desc, BigDecimal price, String category, String image) {
         super();
         this.itemId = itemId;
-        this.name = name;
+        this.title = title;
         this.desc = desc;
         this.price = price;
+        this.category = category;
+        this.image = image;
     }
     public String getItemId() {
         return itemId;
@@ -27,11 +33,11 @@ public class Product{
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
     public String getDesc() {
         return desc;
@@ -52,10 +58,26 @@ public class Product{
         this.quantity = quantity;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
-        return "Product [itemId=" + itemId + ", name=" + name + ", desc="
-                + desc + ", price=" + price + ", quantity=" + quantity + "]";
+        return "Product [itemId=" + itemId + ", name=" + title + ", desc="
+                + desc + ", price=" + price + ", quantity=" + quantity + ", category=" + category +", image=" + image + "]";
     }
 
 

@@ -17,10 +17,7 @@ public class InventoryResource {
     public Inventory getAvailability(@PathParam("itemId") String itemId) {
 
         // TODO , make it collective instead. inventory could have more then 1 entry
-        return Inventory.<Inventory>streamAll()
-                .filter(p -> p.itemId.equals(itemId))
-                .collect(Collectors.toList()).get(0);
-
+        return Inventory.find("itemId", itemId).firstResult();
     }
 
     @GET
