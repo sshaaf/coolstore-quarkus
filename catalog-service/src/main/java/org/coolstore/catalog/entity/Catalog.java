@@ -17,4 +17,5 @@ public class Catalog {
     public String desc;
     public BigDecimal price;
     public String image;
+
 }
