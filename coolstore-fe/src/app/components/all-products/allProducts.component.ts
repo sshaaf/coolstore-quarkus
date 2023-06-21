@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import {Product} from "../../model/product";
+import {Product} from "../../model/product.model";
 import {CatalogService} from "../../services/catalog.service";
+import {CartService} from "../../services/cart.service";
 
 
 const ROWS_HEIGHT: { [id: number]: number } = { 1: 400, 3: 335, 4: 350 };
@@ -13,18 +14,14 @@ const ROWS_HEIGHT: { [id: number]: number } = { 1: 400, 3: 335, 4: 350 };
 })
 export class AllProductsComponent implements OnInit, OnDestroy {
 
-
-
   constructor(
-    private catalogService: CatalogService
+    private catalogService: CatalogService,
+    private cartService: CartService
   ) {}
 
   cols = 3;
   rowHeight: number = ROWS_HEIGHT[this.cols];
-  products?: Product[];
-  count = '12';
-  sort = 'desc';
-  category: string | undefined;
+  products: Array<Product> | undefined;
   productsSubscription: Subscription | undefined;
 
   ngOnInit(): void {
@@ -32,16 +29,26 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   }
 
   getProducts(): void {
-    this.catalogService.getAllProducts().subscribe(
+    this.productsSubscription = this.catalogService.getAllProducts().subscribe(
       {
         next: (data) => {
           this.products = data;
-          console.log(data);
         },
         error: (e) => console.error(e)
       }
     );
   }
+
+  onAddToCart(product: Product): void {
+    this.cartService.addToCart({
+      product: product.image,
+      name: product.title,
+      price: product.price,
+      quantity: 1,
+      itemId: product.itemId,
+    });
+  }
+
 
   ngOnDestroy(): void {
     if (this.productsSubscription) {

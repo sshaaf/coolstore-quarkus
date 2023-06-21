@@ -5,14 +5,41 @@
     </button>
     <span>COOLSTORE</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>shopping_cart</mat-icon>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon
+        [matBadge]="itemsQuantity"
+        [matBadgeHidden]="!itemsQuantity"
+        matBadgeColor="warn"
+      >shopping_cart</mat-icon
+      >
     </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>star</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>share</mat-icon>
-    </button>
+    <mat-menu #menu="matMenu">
+      <div>
+        <span class="mr-16">{{ cart.items.length }} items</span>
+        <a routerLink="cart">View Cart</a>
+      </div>
+        <div *ngIf="cart.items.length" class="py-3">
+          <div
+            *ngFor="let item of cart.items"
+          >
+            {{ item.name }} x {{ item.quantity }}
+            <span class="font-bold not-italic">{{ item.price | currency }}</span>
+          </div>
+        </div>
+        <div>
+          Total:
+          <span class="font-bold not-italic">{{
+            getTotal(cart.items) | currency
+            }}</span>
+        </div>
+        <div>
+          <button (click)="onClearCart()">
+            <mat-icon>remove_shopping_cart</mat-icon>
+          </button>
+          <button routerLink="cart">
+            <mat-icon>shopping_cart_checkout</mat-icon>
+          </button>
+        </div>
+    </mat-menu>
   </mat-toolbar>
 </p>

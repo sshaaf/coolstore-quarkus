@@ -17,6 +17,10 @@ import { NavComponent } from './components/nav/nav.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { AllProductsComponent } from './components/all-products/allProducts.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CartComponent } from './components/cart/cart.component';
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatBadgeModule } from "@angular/material/badge";
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -24,21 +28,25 @@ import { HttpClientModule } from '@angular/common/http';
     DashComponent,
     NavComponent,
     AllProductsComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatBadgeModule,
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
+    MatSnackBarModule,
     MatSidenavModule,
     MatListModule,
     ProductCardComponent,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

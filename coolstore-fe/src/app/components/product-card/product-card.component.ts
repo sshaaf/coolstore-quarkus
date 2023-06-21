@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
-import {Product} from "../../model/product";
+import {Product} from "../../model/product.model";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
 import {AsyncPipe, NgForOf} from "@angular/common";
@@ -27,6 +27,7 @@ export class ProductCardComponent {
   }
 
   onAddToCart(): void {
+    console.log("clicked add to cart..")
     this.addToCart.emit(this.product);
   }
 

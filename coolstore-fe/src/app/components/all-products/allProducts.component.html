@@ -14,9 +14,9 @@
       [rowHeight]="rowHeight"
     >
       <mat-grid-tile *ngFor="let product of products">
-
-        <app-product-card [product]="product"></app-product-card>
-
+        <app-product-card [product]="product"
+                          (addToCart)="onAddToCart($event)"
+        ></app-product-card>
       </mat-grid-tile>
 
     </mat-grid-list>
