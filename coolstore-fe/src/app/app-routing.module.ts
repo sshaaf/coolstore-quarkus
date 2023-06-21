@@ -5,10 +5,7 @@ import {AppComponent} from "./app.component";
 import {DashComponent} from "./components/dash/dash.component";
 
 const routes: Routes = [
-  { path: '', component: AppComponent,  },
   { path: 'cart', component: CartComponent, },
-  { path: 'dash', component: DashComponent, },
-  { path: '**', component: AppComponent },
 ];
 
 
