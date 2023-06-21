@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Cart, CartItem } from '../../model/cart.model';
 import { CartService } from 'src/app/services/cart.service';
-//import { loadStripe } from '@stripe/stripe-js';
 import { Subscription } from 'rxjs';
 
 @Component({
