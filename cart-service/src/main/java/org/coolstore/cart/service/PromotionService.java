@@ -1,8 +1,8 @@
 package org.coolstore.cart.service;
 
+import org.coolstore.cart.model.Cart;
+import org.coolstore.cart.model.CartItem;
 import org.coolstore.cart.model.Promotion;
-import org.coolstore.cart.model.ShoppingCart;
-import org.coolstore.cart.model.ShoppingCartItem;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,18 +22,18 @@ public class PromotionService {
         promotionSet.add(new Promotion("329299", .25));
     }
 
-    public void applyCartItemPromotions(ShoppingCart shoppingCart) {
-        if (shoppingCart != null && shoppingCart.getShoppingCartItemList().size() > 0) {
+    public void applyCartItemPromotions(Cart cart) {
+        if (cart != null && cart.getCartItemList().size() > 0) {
             Map<String, Promotion> promoMap = new HashMap<String, Promotion>();
             for (Promotion promo : getPromotions()) {
                 promoMap.put(promo.getItemId(), promo);
             }
 
-            for (ShoppingCartItem sci : shoppingCart.getShoppingCartItemList()) {
+            for (CartItem sci : cart.getCartItemList()) {
                 String productId = sci.getProduct().getItemId();
                 Promotion promo = promoMap.get(productId);
                 if (promo != null) {
-                    sci.setPromoSavings(sci.getProduct().getPrice() * promo.getPercentOff() * -1);
+                    //sci.setPromoSavings(sci.getProduct().getPrice() * promo.getPercentOff() * -1);
                     sci.setPrice(sci.getProduct().getPrice() * (1 - promo.getPercentOff()));
                 }
             }
@@ -41,12 +41,12 @@ public class PromotionService {
 
     }
 
-    public void applyShippingPromotions(ShoppingCart shoppingCart) {
-        if (shoppingCart != null) {
+    public void applyShippingPromotions(Cart cart) {
+        if (cart != null) {
             //PROMO: if cart total is greater than 75, free shipping
-            if (shoppingCart.getCartItemTotal() >= 75) {
-                shoppingCart.setShippingPromoSavings(shoppingCart.getShippingTotal() * -1);
-                shoppingCart.setShippingTotal(0);
+            if (cart.getCartItemTotal() >= 75) {
+                cart.setShippingPromoSavings(cart.getShippingTotal() * -1);
+                cart.setShippingTotal(0);
 
             }
 

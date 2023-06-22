@@ -1,9 +1,9 @@
 package org.coolstore.cart.service;
 
 import io.quarkus.infinispan.client.Remote;
+import org.coolstore.cart.model.Cart;
+import org.coolstore.cart.model.CartItem;
 import org.coolstore.cart.model.Product;
-import org.coolstore.cart.model.ShoppingCart;
-import org.coolstore.cart.model.ShoppingCartItem;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 
 
 @ApplicationScoped
-public class ShoppingCartServiceImpl implements ShoppingCartService {
+public class CartServiceImpl implements CartService {
 
-    private static final Logger log = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(CartServiceImpl.class);
 
     @Inject
     @Remote(CacheService.CART_CACHE)
-    RemoteCache<String, ShoppingCart> carts;
+    RemoteCache<String, Cart> carts;
 
     @Inject
     PromotionService ps;
@@ -37,28 +37,28 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private Map<String, Product> productMap = new HashMap<>();
 
     @Override
-    public ShoppingCart getShoppingCart(String cartId) {
+    public Cart getShoppingCart(String cartId) {
         if (!carts.containsKey(cartId)) {
-            ShoppingCart cart = new ShoppingCart(cartId);
+            Cart cart = new Cart(cartId);
             carts.put(cartId, cart);
             return cart;
         }
 
-        ShoppingCart cart = carts.get(cartId);
+        Cart cart = carts.get(cartId);
         priceShoppingCart(cart);
         carts.put(cartId, cart);
         return cart;
     }
 
-    public void priceShoppingCart(ShoppingCart sc) {
+    public void priceShoppingCart(Cart sc) {
         if (sc != null) {
             initShoppingCartForPricing(sc);
 
-            if (sc.getShoppingCartItemList() != null && sc.getShoppingCartItemList().size() > 0) {
+            if (sc.getCartItemList() != null && sc.getCartItemList().size() > 0) {
                 ps.applyCartItemPromotions(sc);
 
-                for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
-                    sc.setCartItemPromoSavings(sc.getCartItemPromoSavings() + sci.getPromoSavings() * sci.getQuantity());
+                for (CartItem sci : sc.getCartItemList()) {
+                    //sc.setCartItemPromoSavings(sc.getCartItemPromoSavings() + sci.getPromoSavings() * sci.getQuantity());
                     sc.setCartItemTotal(sc.getCartItemTotal() + sci.getPrice() * sci.getQuantity());
                 }
 
@@ -70,14 +70,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
     }
 
-    void initShoppingCartForPricing(ShoppingCart sc) {
+    void initShoppingCartForPricing(Cart sc) {
         sc.setCartItemTotal(0);
         sc.setCartItemPromoSavings(0);
         sc.setShippingTotal(0);
         sc.setShippingPromoSavings(0);
         sc.setCartTotal(0);
 
-        for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
+        for (CartItem sci : sc.getCartItemList()) {
             Product p = getProduct(sci.getProduct().getItemId());
 
             //if product exist, create new product to reset price
@@ -85,8 +85,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 sci.setProduct(new Product(p.getItemId(), p.getName(), p.getDesc(), p.getPrice()));
                 sci.setPrice(p.getPrice());
             }
-
-            sci.setPromoSavings(0);
         }
     }
 
@@ -116,12 +114,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart deleteItem(String cartId, String itemId, int quantity) {
-        List<ShoppingCartItem> toRemoveList = new ArrayList<>();
+    public Cart deleteItem(String cartId, String itemId, int quantity) {
+        List<CartItem> toRemoveList = new ArrayList<>();
 
-        ShoppingCart cart = getShoppingCart(cartId);
+        Cart cart = getShoppingCart(cartId);
 
-        cart.getShoppingCartItemList().stream()
+        cart.getCartItemList().stream()
                 .filter(sci -> sci.getProduct().getItemId().equals(itemId))
                 .forEach(sci -> {
                     if (quantity >= sci.getQuantity()) {
@@ -131,7 +129,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     }
                 });
 
-        toRemoveList.forEach(cart::removeShoppingCartItem);
+        toRemoveList.forEach(cart::removeCartItem);
         priceShoppingCart(cart);
         carts.put(cartId, cart);
 
@@ -139,17 +137,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart checkout(String cartId) {
-        ShoppingCart cart = getShoppingCart(cartId);
-        cart.resetShoppingCartItemList();
+    public Cart checkout(String cartId) {
+        Cart cart = getShoppingCart(cartId);
+        cart.resetCartItemList();
         priceShoppingCart(cart);
         carts.put(cartId, cart);
         return cart;
     }
 
     @Override
-    public ShoppingCart addItem(String cartId, String itemId, int quantity) {
-        ShoppingCart cart = getShoppingCart(cartId);
+    public Cart addItem(String cartId, String itemId, int quantity) {
+        Cart cart = getShoppingCart(cartId);
         Product product = getProduct(itemId);
 
         if (product == null) {
@@ -158,14 +156,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
 
 
-        ShoppingCartItem sci = new ShoppingCartItem(product, product.getPrice(), quantity, 0.0f);
-        cart.addShoppingCartItem(sci);
+        CartItem sci = new CartItem(product, product.getPrice(), quantity, 0.0f);
+        cart.addCartItem(sci);
 
         try {
             priceShoppingCart(cart);
-            cart.setShoppingCartItemList(dedupeCartItems(cart));
+            cart.setCartItemList(dedupeCartItems(cart));
         } catch (Exception ex) {
-            cart.removeShoppingCartItem(sci);
+            cart.removeCartItem(sci);
             throw ex;
         }
 
@@ -174,19 +172,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart set(String cartId, String tmpId) {
+    public Cart set(String cartId, String tmpId) {
 
-        ShoppingCart cart = getShoppingCart(cartId);
-        ShoppingCart tmpCart = getShoppingCart(tmpId);
+        Cart cart = getShoppingCart(cartId);
+        Cart tmpCart = getShoppingCart(tmpId);
 
         if (tmpCart != null) {
-            cart.resetShoppingCartItemList();
-            cart.setShoppingCartItemList(tmpCart.getShoppingCartItemList());
+            cart.resetCartItemList();
+            cart.setCartItemList(tmpCart.getCartItemList());
         }
 
         try {
             priceShoppingCart(cart);
-            cart.setShoppingCartItemList(dedupeCartItems(cart));
+            cart.setCartItemList(dedupeCartItems(cart));
         } catch (Exception ex) {
             throw ex;
         }
@@ -195,10 +193,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return cart;
     }
 
-    List<ShoppingCartItem> dedupeCartItems(ShoppingCart sc) {
-        List<ShoppingCartItem> result = new ArrayList<>();
+    List<CartItem> dedupeCartItems(Cart sc) {
+        List<CartItem> result = new ArrayList<>();
         Map<String, Integer> quantityMap = new HashMap<>();
-        for (ShoppingCartItem sci : sc.getShoppingCartItemList()) {
+        for (CartItem sci : sc.getCartItemList()) {
             if (quantityMap.containsKey(sci.getProduct().getItemId())) {
                 quantityMap.put(sci.getProduct().getItemId(), quantityMap.get(sci.getProduct().getItemId()) + sci.getQuantity());
             } else {
@@ -208,7 +206,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         for (String itemId : quantityMap.keySet()) {
             Product p = getProduct(itemId);
-            ShoppingCartItem newItem = new ShoppingCartItem();
+            CartItem newItem = new CartItem();
             newItem.setQuantity(quantityMap.get(itemId));
             newItem.setPrice(p.getPrice());
             newItem.setProduct(p);

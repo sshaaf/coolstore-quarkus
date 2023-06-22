@@ -1,12 +1,12 @@
 package org.coolstore.cart.service;
 
-import org.coolstore.cart.model.ShoppingCart;
+import org.coolstore.cart.model.Cart;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class ShippingService {
 
-    public void calculateShipping(ShoppingCart sc) {
+    public void calculateShipping(Cart sc) {
         if (sc != null) {
             if (sc.getCartItemTotal() >= 0 && sc.getCartItemTotal() < 25) {
                 sc.setShippingTotal(2.99);

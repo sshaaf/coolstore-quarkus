@@ -18,7 +18,6 @@ export class NavComponent {
 
   set cart(cart: Cart) {
     this._cart = cart;
-    console.log("setting.. "+this._cart);
     this.itemsQuantity = cart.items
       .map((item) => item.quantity)
       .reduce((prev, curent) => prev + curent, 0);

@@ -6,7 +6,7 @@ import java.util.List;
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
-public class ShoppingCart {
+public class Cart {
 
     private double cartItemTotal = 0.0f;
     private double cartItemPromoSavings = 0.0f;
@@ -14,23 +14,23 @@ public class ShoppingCart {
     private double shippingPromoSavings = 0.0f;
     private double cartTotal = 0.0f;
     private String cartId;
-    private List<ShoppingCartItem> shoppingCartItemList = new ArrayList<ShoppingCartItem>();
+    private List<CartItem> cartItemList = new ArrayList<CartItem>();
 
-    public ShoppingCart() {}
+    public Cart() {}
 
-    public ShoppingCart(String cartId){
+    public Cart(String cartId){
         this.cartId = cartId;
     }
 
     @ProtoFactory
-    public ShoppingCart(double cartItemTotal, double cartItemPromoSavings, double shippingTotal, double shippingPromoSavings, double cartTotal, String cartId, List<ShoppingCartItem> shoppingCartItemList) {
+    public Cart(double cartItemTotal, double cartItemPromoSavings, double shippingTotal, double shippingPromoSavings, double cartTotal, String cartId, List<CartItem> cartItemList) {
         this.cartItemTotal = cartItemTotal;
         this.cartItemPromoSavings = cartItemPromoSavings;
         this.shippingTotal = shippingTotal;
         this.shippingPromoSavings = shippingPromoSavings;
         this.cartTotal = cartTotal;
         this.cartId = cartId;
-        this.shoppingCartItemList = shoppingCartItemList;
+        this.cartItemList = cartItemList;
     }
 
     @ProtoField(number = 1)
@@ -43,28 +43,28 @@ public class ShoppingCart {
     }
 
     @ProtoField(number = 2, required = false)
-    public List<ShoppingCartItem> getShoppingCartItemList() {
-        return shoppingCartItemList;
+    public List<CartItem> getCartItemList() {
+        return cartItemList;
     }
 
-    public void setShoppingCartItemList(List<ShoppingCartItem> shoppingCartItemList) {
-        this.shoppingCartItemList = shoppingCartItemList;
+    public void setCartItemList(List<CartItem> cartItemList) {
+        this.cartItemList = cartItemList;
     }
 
-    public void resetShoppingCartItemList() {
-        shoppingCartItemList = new ArrayList<ShoppingCartItem>();
+    public void resetCartItemList() {
+        cartItemList = new ArrayList<CartItem>();
     }
 
-    public void addShoppingCartItem(ShoppingCartItem sci) {
+    public void addCartItem(CartItem sci) {
         if (sci != null) {
-            shoppingCartItemList.add(sci);
+            cartItemList.add(sci);
         }
     }
 
-    public boolean removeShoppingCartItem(ShoppingCartItem sci) {
+    public boolean removeCartItem(CartItem sci) {
         boolean removed = false;
         if (sci != null) {
-            removed = shoppingCartItemList.remove(sci);
+            removed = cartItemList.remove(sci);
         }
         return removed;
     }

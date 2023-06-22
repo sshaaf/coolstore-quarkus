@@ -13,7 +13,7 @@ export class CatalogService {
 
   constructor(private httpClient: HttpClient) {
     this.apiUrl = environment.catalogApiUrl+"/products";
-    console.log("API -> "+this.apiUrl)
+    console.log("Catalog API -> "+this.apiUrl)
   }
 
 

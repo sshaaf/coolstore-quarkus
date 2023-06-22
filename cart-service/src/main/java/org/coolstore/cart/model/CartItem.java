@@ -3,17 +3,19 @@ package org.coolstore.cart.model;
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
-public class ShoppingCartItem {
+public class CartItem {
 
     private double price = 0.0f;
     private int quantity = 0;
-    private double promoSavings = 0.0f;
+    //private double promoSavings = 0.0f;
     private Product product;
 
-    public ShoppingCartItem() {}
+    private double promoSavings;
+
+    public CartItem() {}
 
     @ProtoFactory
-    public ShoppingCartItem(Product product, double price, int quantity, double promoSavings) {
+    public CartItem(Product product, double price, int quantity, double promoSavings) {
         this.price = price;
         this.quantity = quantity;
         this.promoSavings = promoSavings;
@@ -45,6 +47,7 @@ public class ShoppingCartItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
 
     @ProtoField(number = 4, required = false, defaultValue = "0.0f")
     public double getPromoSavings() {
