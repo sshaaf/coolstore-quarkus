@@ -25,7 +25,7 @@ export class CartService {
   }
 
   setCart(){
-    if(this.store.getCartId() == null)
+/*    if(this.store.getCartId() == null)
     { // @ts-ignore
       this.cartId = this.store.getCreateCartId().toString();
     }
@@ -38,6 +38,8 @@ export class CartService {
         error: (e) => console.error(e)
       }
     );
+
+ */
     console.log("cart id initialized "+this.store.getCartId());
   }
 
@@ -51,7 +53,7 @@ export class CartService {
     }
 
     this.cart.next({ items });
-    this._putCartItem(this.store.getCartId(), item).subscribe(
+/*    this._putCartItem(this.store.getCartId(), item).subscribe(
       {
         next: (data) => {
           console.log(data);
@@ -59,6 +61,8 @@ export class CartService {
         error: (e) => console.error(e)
       }
     );
+
+ */
     this._snackBar.open('1 item added to cart.', 'Ok', { duration: 3000 });
   }
 
@@ -106,7 +110,7 @@ export class CartService {
     this._snackBar.open('Cart is cleared.', 'Ok', {
       duration: 3000,
     });
-    this._checkoutCart(this.store.getCartId()).subscribe(
+    /*this._checkoutCart(this.store.getCartId()).subscribe(
       {
         next: (data) => {
           console.log(data);
@@ -114,6 +118,8 @@ export class CartService {
         error: (e) => console.error(e)
       }
     );
+
+     */
   }
 
   getTotal(items: CartItem[]): number {

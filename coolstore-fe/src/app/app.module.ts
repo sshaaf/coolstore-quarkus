@@ -21,6 +21,9 @@ import { CartComponent } from './components/cart/cart.component';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatBadgeModule } from "@angular/material/badge";
 import {MatTableModule} from "@angular/material/table";
+import {CartService} from "./services/cart.service";
+import {CatalogService} from "./services/catalog.service";
+import {MatTreeModule} from "@angular/material/tree";
 
 @NgModule({
   declarations: [
@@ -46,9 +49,11 @@ import {MatTableModule} from "@angular/material/table";
     MatListModule,
     ProductCardComponent,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
+    MatTreeModule,
+    MatListModule,
   ],
-  providers: [],
+  providers: [CartService, CatalogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
