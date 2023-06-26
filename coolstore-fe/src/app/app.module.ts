@@ -13,9 +13,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { NavComponent } from './components/nav/nav.component';
+import { HeaderComponent } from './components/header/header.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
-import { AllProductsComponent } from './components/all-products/allProducts.component';
+import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CartComponent } from './components/cart/cart.component';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
@@ -29,8 +29,8 @@ import {MatTreeModule} from "@angular/material/tree";
   declarations: [
     AppComponent,
     DashComponent,
-    NavComponent,
-    AllProductsComponent,
+    HeaderComponent,
+    HomeComponent,
     CartComponent,
   ],
   imports: [

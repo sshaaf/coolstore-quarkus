@@ -8,11 +8,11 @@ import {CartService} from "../../services/cart.service";
 const ROWS_HEIGHT: { [id: number]: number } = { 1: 400, 3: 335, 4: 350 };
 
 @Component({
-  selector: 'app-all-products',
-  templateUrl: './allProducts.component.html',
-  styleUrls: ['./allProducts.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class AllProductsComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private catalogService: CatalogService,

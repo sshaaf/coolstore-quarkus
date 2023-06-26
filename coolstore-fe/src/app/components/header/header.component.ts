@@ -3,11 +3,11 @@ import { Cart, CartItem } from '../../model/cart.model';
 import { CartService } from 'src/app/services/cart.service';
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
-export class NavComponent {
+export class HeaderComponent {
   private _cart: Cart = { items: [] };
   itemsQuantity = 0;
 
