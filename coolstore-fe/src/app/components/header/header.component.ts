@@ -5,7 +5,7 @@ import { CartService } from 'src/app/services/cart.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
   private _cart: Cart = { items: [] };
@@ -20,7 +20,7 @@ export class HeaderComponent {
     this._cart = cart;
     this.itemsQuantity = cart.items
       .map((item) => item.quantity)
-      .reduce((prev, curent) => prev + curent, 0);
+      .reduce((prev, current) => prev + current, 0);
   }
 
   constructor(private cartService: CartService) {}
