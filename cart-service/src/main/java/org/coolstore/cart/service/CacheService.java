@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 
 public class CacheService {
 
-    public static final String CART_CACHE = "cart";
+/*    public static final String CART_CACHE = "cart";
     public static final String PRODUCT_CACHE = "cart";
 
     @Inject
@@ -57,7 +57,7 @@ public class CacheService {
     void onStart(@Observes StartupEvent ev) {
         RemoteCache<Object, Object> cache = cacheManager.administration().getOrCreateCache(CART_CACHE,
                 new XMLStringConfiguration(String.format(CACHE_CONFIG_CART, CART_CACHE)));
-    }
+    }*/
 
 
 }

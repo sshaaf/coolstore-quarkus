@@ -1,9 +1,11 @@
 package org.coolstore.cart.service;
 
+import io.quarkus.infinispan.client.InfinispanClientName;
 import io.quarkus.infinispan.client.Remote;
 import org.coolstore.cart.model.Cart;
 import org.coolstore.cart.model.CartItem;
 import org.coolstore.cart.model.Product;
+import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,22 +13,27 @@ import org.slf4j.LoggerFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
 @ApplicationScoped
 public class CartServiceImpl implements CartService {
-
+    public static final String CART_CACHE = "carts";
     private static final Logger log = LoggerFactory.getLogger(CartServiceImpl.class);
 
+    // primary
     @Inject
-    @Remote(CacheService.CART_CACHE)
+    @InfinispanClientName("site-nyc")
+    @Remote(CART_CACHE)
     RemoteCache<String, Cart> carts;
+
+
+    @Inject
+    @InfinispanClientName("site-lon")
+    @Remote(CART_CACHE)
+    RemoteCache<String, Cart> cartsBkp;
 
     @Inject
     PromotionService ps;
@@ -36,8 +43,37 @@ public class CartServiceImpl implements CartService {
 
     private Map<String, Product> productMap = new HashMap<>();
 
+
+
+    private void maybeFail(String failureLogMessage) {
+        if (new Random().nextBoolean()) {
+            log.error(failureLogMessage);
+            throw new RuntimeException("Resource failure.");
+        }
+    }
+
+
+    public Cart fallbackCache(String cartId) {
+        log.info("Falling back to the backup cache...");
+        // safe bet, return something that everybody likes
+
+        if (!cartsBkp.containsKey(cartId)) {
+            Cart cart = new Cart(cartId);
+            cartsBkp.put(cartId, cart);
+            return cart;
+        }
+
+        Cart cart = cartsBkp.get(cartId);
+        priceShoppingCart(cart);
+        cartsBkp.put(cartId, cart);
+        return cart;
+    }
+
+
     @Override
+    @Fallback(fallbackMethod = "fallbackCache")
     public Cart getShoppingCart(String cartId) {
+        maybeFail("trying to failover.....");
         if (!carts.containsKey(cartId)) {
             Cart cart = new Cart(cartId);
             carts.put(cartId, cart);
@@ -49,6 +85,7 @@ public class CartServiceImpl implements CartService {
         carts.put(cartId, cart);
         return cart;
     }
+
 
     public void priceShoppingCart(Cart sc) {
         if (sc != null) {
@@ -215,4 +252,5 @@ public class CartServiceImpl implements CartService {
 
         return result;
     }
+
 }
