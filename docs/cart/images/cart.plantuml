@@ -1,0 +1,89 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Cart {
+  - cartId: String
+  - cartItemList: List<CartItem>
+  - cartItemPromoSavings: double
+  - cartItemTotal: double
+  - shippingTotal: double
+  - shippingPromoSavings: double
+  - cartTotal: double
+}
+interface CartContextInitializer << interface >>
+class CartItem {
+  - price: double
+  - quantity: int
+  - promoSavings: double
+  - product: Product
+}
+class CartItem {
+  + product: String
+  + name: String
+  + quantity: int
+  + itemId: String
+  + price: BigInteger
+}
+class CartResourceV1 {
+  ~ shoppingCartService: CartService
+}
+class CartResourceV2 {
+  ~ shoppingCartService: CartService
+}
+interface CartService << interface >>
+class CartServiceImpl {
+  - log: Logger
+  ~ ss: ShippingService
+  ~ ps: PromotionService
+  + CART_CACHE: String
+  - productMap: Map<String, Product>
+  ~ carts: RemoteCache<String, Cart>
+}
+interface CatalogService << interface >>
+class CreditCard {
+  - expiration: String
+  - nameOnCard: String
+  - number: String
+}
+class Order {
+  - billingAddress: String
+  - creditCard: CreditCard
+  - name: String
+  - orderId: String
+  - total: String
+}
+class Product {
+  - price: double
+  - itemId: String
+  - name: String
+  - desc: String
+}
+class Promotion {
+  - itemId: String
+  - percentOff: double
+}
+class PromotionService {
+  - name: String
+  - promotionSet: Set<Promotion>
+}
+class ShippingService
+
+Cart                   "1" *-[#595959,plain]-> "cartItemList\n*" CartItem               
+CartItem               "1" *-[#595959,plain]-> "product\n1" Product                
+CartResourceV1         "1" *-[#595959,plain]-> "shoppingCartService\n1" CartService            
+CartResourceV2         "1" *-[#595959,plain]-> "shoppingCartService\n1" CartService            
+CartServiceImpl        "1" *-[#595959,plain]-> "carts\n*" Cart                   
+CartServiceImpl         -[#595959,dashed]->  Cart                   : "«create»"
+CartServiceImpl         -[#595959,dashed]->  CartItem               : "«create»"
+CartServiceImpl         -[#008200,dashed]-^  CartService            
+CartServiceImpl         -[#595959,dashed]->  Product                : "«create»"
+CartServiceImpl        "1" *-[#595959,plain]-> "productMap\n*" Product                
+CartServiceImpl        "1" *-[#595959,plain]-> "ps\n1" PromotionService       
+CartServiceImpl        "1" *-[#595959,plain]-> "ss\n1" ShippingService        
+Order                  "1" *-[#595959,plain]-> "creditCard\n1" CreditCard             
+PromotionService       "1" *-[#595959,plain]-> "promotionSet\n*" Promotion              
+PromotionService        -[#595959,dashed]->  Promotion              : "«create»"
+@enduml

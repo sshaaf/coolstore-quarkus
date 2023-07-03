@@ -1,11 +1,9 @@
 package org.coolstore.cart.service;
 
-import io.quarkus.infinispan.client.InfinispanClientName;
 import io.quarkus.infinispan.client.Remote;
 import org.coolstore.cart.model.Cart;
 import org.coolstore.cart.model.CartItem;
 import org.coolstore.cart.model.Product;
-import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +23,8 @@ public class CartServiceImpl implements CartService {
 
     // primary
     @Inject
-    @InfinispanClientName("site-nyc")
     @Remote(CART_CACHE)
     RemoteCache<String, Cart> carts;
-
-
-    @Inject
-    @InfinispanClientName("site-lon")
-    @Remote(CART_CACHE)
-    RemoteCache<String, Cart> cartsBkp;
 
     @Inject
     PromotionService ps;
@@ -43,37 +34,8 @@ public class CartServiceImpl implements CartService {
 
     private Map<String, Product> productMap = new HashMap<>();
 
-
-
-    private void maybeFail(String failureLogMessage) {
-        if (new Random().nextBoolean()) {
-            log.error(failureLogMessage);
-            throw new RuntimeException("Resource failure.");
-        }
-    }
-
-
-    public Cart fallbackCache(String cartId) {
-        log.info("Falling back to the backup cache...");
-        // safe bet, return something that everybody likes
-
-        if (!cartsBkp.containsKey(cartId)) {
-            Cart cart = new Cart(cartId);
-            cartsBkp.put(cartId, cart);
-            return cart;
-        }
-
-        Cart cart = cartsBkp.get(cartId);
-        priceShoppingCart(cart);
-        cartsBkp.put(cartId, cart);
-        return cart;
-    }
-
-
     @Override
-    @Fallback(fallbackMethod = "fallbackCache")
     public Cart getShoppingCart(String cartId) {
-        maybeFail("trying to failover.....");
         if (!carts.containsKey(cartId)) {
             Cart cart = new Cart(cartId);
             carts.put(cartId, cart);
@@ -85,7 +47,6 @@ public class CartServiceImpl implements CartService {
         carts.put(cartId, cart);
         return cart;
     }
-
 
     public void priceShoppingCart(Cart sc) {
         if (sc != null) {

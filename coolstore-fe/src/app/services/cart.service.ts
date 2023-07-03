@@ -108,7 +108,9 @@ export class CartService {
     this._snackBar.open('Cart is cleared.', 'Ok', {
       duration: 3000,
     });
+
     this._checkoutCart(this.store.getCartId()).subscribe(
+
       {
         next: (data) => {
           console.log(data);
