@@ -71,7 +71,7 @@ If you want to learn more about building native executables, please consult http
 
 
 ## Class Diagram
-![Class Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/sshaaf/coolstore-quarkus/main/cart-service/uml/cart.plantuml)
+![Class Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/sshaaf/coolstore-quarkus/main/docs/cart/images/cart.plantuml)
 
 
 
