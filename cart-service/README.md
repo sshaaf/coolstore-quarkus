@@ -87,7 +87,9 @@ metadata:
   name: nyc 
   namespace: nyc
 spec:
-  replicas: 2 
+  replicas: 2
+  expose:
+    type: Route
 ```
 Create a cache in the DG/Infinispan server
 ![Create Cache](../docs/cart/images/nyc-local.png)
