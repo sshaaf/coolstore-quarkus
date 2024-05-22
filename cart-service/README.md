@@ -133,7 +133,7 @@ mvn clean compile package -Dquarkus.kubernetes.deploy=true
 Once deployed call the cart-service via curl as follows.
 ```bash
 curl -X GET http://CART-SERIVCE-ROUTE/api/cart/v2/1fa842e1-077a-4c09-85c5-a12288c2be77
-{"cartItemTotal":0.0,"cartItemPromoSavings":0.0,"shippingTotal":0.0,"shippingPromoSavings":0.0,"cartTotal":0.0,"cartId":"1fa842e1-077a-4c09-85c5-a12288c2be77","cartItemList":[]}⏎
+{"cartItemTotal":0.0,"cartItemPromoSavings":0.0,"shippingTotal":0.0,"shippingPromoSavings":0.0,"cartTotal":0.0,"cartId":"1fa842e1-077a-4c09-85c5-a12288c2be77","cartItemList":[]}
 ```
 
 ## Red Hat Data Grid/Infinispan Cross-site cluster deployment
